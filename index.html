@@ -222,6 +222,40 @@
   .members .m h4{margin:.3rem 0 .5rem; color:var(--deep-2);}
   .members .m p{margin:0; font-size:.9rem;}
 
+  .music-player{
+    position:fixed;
+    right:1.2rem;
+    bottom:1.2rem;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    background:rgba(16,32,43,.92);
+    backdrop-filter:blur(6px);
+    color:#eef2f0;
+    padding:.55rem .9rem .55rem .55rem;
+    border-radius:30px;
+    box-shadow:0 6px 22px rgba(0,0,0,.35);
+    font-size:.8rem;
+    letter-spacing:.03em;
+    border:1px solid rgba(168,90,58,.5);
+  }
+  .music-player button{
+    width:38px;height:38px;
+    flex:0 0 auto;
+    border:none;
+    border-radius:50%;
+    background:var(--rust);
+    color:#fff;
+    font-size:1rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .music-player button:hover{background:var(--rust-deep);}
+  .music-player .label{white-space:nowrap; max-width:180px; overflow:hidden; text-overflow:ellipsis;}
+
   footer{
     padding:3rem 1.5rem 4rem;
     text-align:center;
@@ -441,9 +475,40 @@
 <footer>
   <div class="wrap">
     《Resonance》介紹網頁 · 文字整理自 Magne Furuholmen 官方網站及其他公開資料，部分作品意涵段落屬合理解讀而非藝術家逐字說明 · 照片為現場實拍與公開網路資料<br>
+    背景音樂：Magne Furuholmen〈Past Perfect Future Tense〉，錄自 NRK Store Studio 現場演出，版權歸原著作權人所有，僅作非商業介紹用途<br>
     行程對應：北歐四國 15 日行程 Day 11 卑爾根 · <a href="https://maskywg.github.io/northeurope/北歐四國" target="_blank" rel="noopener">回到北歐四國主行程網頁 ↗</a>
   </div>
 </footer>
+
+<div class="music-player">
+  <button id="musicToggle" aria-label="播放／暫停背景音樂">▶</button>
+  <span class="label">Past Perfect Future Tense</span>
+  <audio id="bgMusic" src="audio/past-perfect-future-tense.mp3" loop preload="auto"></audio>
+</div>
+<script>
+(function(){
+  var audio = document.getElementById('bgMusic');
+  var btn = document.getElementById('musicToggle');
+  function setPlaying(isPlaying){
+    btn.textContent = isPlaying ? '❚❚' : '▶';
+  }
+  audio.play().then(function(){
+    setPlaying(true);
+  }).catch(function(){
+    setPlaying(false);
+  });
+  btn.addEventListener('click', function(){
+    if(audio.paused){
+      audio.play().then(function(){ setPlaying(true); });
+    } else {
+      audio.pause();
+      setPlaying(false);
+    }
+  });
+  audio.addEventListener('play', function(){ setPlaying(true); });
+  audio.addEventListener('pause', function(){ setPlaying(false); });
+})();
+</script>
 
 </body>
 </html>
